@@ -4,7 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cyber Shop</title>
+    <title>Cyberphone Shop</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Google Fonts  -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,24 +16,56 @@
         rel="stylesheet">
     <!-- Tailwind  -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Flowbite -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.7.0/flowbite.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="./css/main.css">
 </head>
 
 <body>
     <header class="header user-layout">
         <div class="header__fixed">
-            <div class="container mx-auto flex justify-between">
+            <div class="container mx-auto flex justify-between items-center">
                 <div class="flex items-center">
-                    <div class="header__logo">
+                    <div class="header__logo mr-4">
                         <img src="./img/logo.png" alt="" class="w-full h-full object-center object-cover">
                     </div>
-                    <h1 class="text-4xl font-extrabold">CYBER SHOP</h1>
+                    <h1 class="text-3xl font-extrabold">MOBILES SHOP</h1>
                 </div>
-                <div>
-                    b
+                <div class="flex min-w-[50%] h-[60px] border-2 border-gray-300 rounded-full">
+                    <div class="relative">
+                        <button id="btnFilter" data-dropdown-toggle="dropdownFilter" data-dropdown-trigger="hover"
+                            class="inline-flex items-center h-full text-center rounded-l-full px-7" type="button">Tất cả
+                            <svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m1 1 4 4 4-4" />
+                            </svg>
+                        </button>
+                        <div id="dropdownFilter"
+                            class="z-10 hidden top-[-100px] bg-white divide-y divide-gray-100 rounded-lg shadow-[0px_3px_18px_0px_rgba(0,0,0,0.1)] w-44 dark:bg-gray-700">
+                            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="btnFilter">
+                                <li>
+                                    <a href="#"
+                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Điện
+                                        thoại</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <input type="text"
+                        class="flex-auto outline-none border-0 border-l-2 border-gray-300 rounded-r-full focus-visible:outline-none focus:ring-offset-0 focus:ring-0 focus:border-gray-300"
+                        placeholder="Gõ vào nội dung tìm kiếm sản phẩm">
+                    <button class="px-16 rounded-full border-0 bg-gray-200 text-xl">
+                        <i class="fa fa-search"></i>
+                    </button>
                 </div>
-                <div>
-                    c
+                <div class="flex flex-row items-center justify-end text-right">
+                    <button class="group text-xl border-gray-300 border-2 p-4 rounded-full hover:border-lime-600"><i
+                            class="fa fa-shopping-cart group-hover:text-lime-600"></i></button>
+                    <div class="flex flex-col ml-1 text-gray-600">
+                        <span>1,000</span>
+                        <span>x 1,000VND</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -37,11 +73,7 @@
 
         </div>
     </header>
-    <div class="group is-published">
-        <div class="hidden group-[.is-published]:block">
-          Published
-        </div>
-      </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.7.0/flowbite.min.js"></script>
 </body>
 
 </html>
