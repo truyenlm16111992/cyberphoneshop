@@ -9,7 +9,6 @@ html, body {
   font-size: 16px;
 }
 
-.header.user-layout .header__logo {
-  width: 80px;
-  height: 80px;
+.carousel {
+  background-image: url(../../img/bg-carousel.jpg);
 }/*# sourceMappingURL=main.css.map */
