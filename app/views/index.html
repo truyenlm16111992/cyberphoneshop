@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="../../assets/css/main.css">
 </head>
 
-<body>
+<body class="overflow-scroll">
     <header class="header user-layout">
         <div class="header__fixed">
             <div class="container p-5 mx-auto flex justify-between items-center">
@@ -59,7 +59,7 @@
                 <div
                     class="w-[317px] px-5 py-3 bg-slate-800 text-white relative before:content-[''] before:absolute before:bg-slate-800 before:w-full before:h-3 before:-top-3 before:left-0 before:rounded-t-lg">
                     <div class="flex justify-between items-center -translate-y-1">
-                        <h2 class="text-xl font-medium">THẾ GIỚI CÔNG NGHỆ SỐ</h2>
+                        <h2 class="text-xl font-medium">THẾ GIỚI DI ĐỘNG VIỆT</h2>
                         <i class="fa fa-align-right text-xl"></i>
                     </div>
                 </div>
@@ -209,28 +209,20 @@
             </div>
         </div>
     </section>
-    <!-- Modal  -->
+    <!-- Quick View Modal -->
     <!-- Modal toggle -->
-    <button id="test" data-modal-target="defaultModal" data-modal-toggle="defaultModal"
-        class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        type="button">
-        Toggle modal
-    </button>
-    <button id="test2" type="button" onclick="getElement('#test').click();">Test</button>
+    <button id="btnShowQuickView" class="hidden" data-modal-target="quickViewModal" data-modal-toggle="quickViewModal" type="button"></button>
     <!-- Main modal -->
-    <div id="defaultModal" tabindex="-1" aria-hidden="true"
+    <div id="quickViewModal" tabindex="-1" aria-hidden="true"
         class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative w-full max-w-2xl max-h-full">
             <!-- Modal content -->
             <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                <!-- Modal header -->
-                <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                        Terms of Service
-                    </h3>
+                <!-- Modal body -->
+                <div class="relative p-6">
                     <button type="button"
-                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                        data-modal-hide="defaultModal">
+                        class="absolute flex justify-center items-center right-0 top-0 rounded-bl-lg rounded-tr-lg text-sm w-6 h-6 text-white bg-red-500"
+                        data-modal-hide="quickViewModal">
                         <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 14 14">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -238,27 +230,34 @@
                         </svg>
                         <span class="sr-only">Close modal</span>
                     </button>
-                </div>
-                <!-- Modal body -->
-                <div class="p-6 space-y-6">
-                    <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                        With less than a month to go before the European Union enacts new consumer privacy laws for its
-                        citizens, companies around the world are updating their terms of service agreements to comply.
-                    </p>
-                    <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                        The European Union’s General Data Protection Regulation (G.D.P.R.) goes into effect on May 25
-                        and is meant to ensure a common set of data rights in the European Union. It requires
-                        organizations to notify users as soon as possible of high-risk data breaches that could
-                        personally affect them.
-                    </p>
-                </div>
-                <!-- Modal footer -->
-                <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-                    <button data-modal-hide="defaultModal" type="button"
-                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">I
-                        accept</button>
-                    <button data-modal-hide="defaultModal" type="button"
-                        class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Decline</button>
+                    <div class="flex m-0 p-0">
+                        <div class="w-[40%]">
+                            <img src="../../assets/img/imac.png" alt="">
+                        </div>
+                        <div class="w-[60%] space-y-3">
+                            <h3 class="quick-view text-2xl font-bold text-gray-900" name="name">
+                                iPhone 14 Pro Max 128GB
+                            </h3>
+                            <div class="flex items-end space-x-2">
+                                <h3 class="font-bold text-2xl text-red-500">30.000.000 đ</h3>
+                                <h4 class="font-semibold text-xl line-through text-gray-300">60.000.000 đ</h4>
+                            </div>
+                            <div class="quick-view" name="description">
+                                iPhone 14 Pro Max đem đến những trải nghiệm không thể tìm thấy trên mọi thế hệ iPhone trước đó với màu Tím Deep Purple sang trọng, camera 48MP lần đầu xuất hiện, chip A16 Bionic và màn hình “viên thuốc” Dynamic Island linh hoạt, nịnh mắt.
+                            </div>
+                            <div class="flex flex-col">
+                                <a href="#" class="leading-10 border border-gray-300 text-center font-semibold bg-lime-600 text-white hover:text-lime-600 hover:bg-white">Chi tiết thông tin sản phẩm</a>
+                                <div class="flex mt-1">
+                                    <div class="relative w-[100px] qty-adjust">
+                                        <input type="number" class="qty-adjust__num inline-block w-full hover:appearance-none appearance-none leading-10 text-xl font-semibold border transition-colors duration-300 border-lime-500 focus:border-lime-500 focus:shadow-none focus:ring-0" maxlength="2" value="1">
+                                        <button class="qty-adjust__operator absolute top-0 right-0 h-1/2 w-1/2 hover:text-lime-600" data-operator="++" type="button"><i class="fa fa-plus-circle"></i></button>
+                                        <button class="qty-adjust__operator absolute bottom-0 right-0 h-1/2 w-1/2 hover:text-lime-600" data-operator="--" type="button"><i class="fa fa-minus-circle"></i></button>
+                                    </div>
+                                    <button class="ml-1 flex-auto font-semibold border transition-colors duration-300 border-gray-300 bg-lime-600 text-white hover:text-lime-600 hover:bg-white">Thêm vào giỏ</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -278,12 +277,17 @@
         </div>
     </a>
     <div class="w-full h-56"></div>
+    <!-- Utils -->
+    <script src="../../assets/utils/utils.js"></script>
     <!-- Flowbite  -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.7.0/flowbite.min.js"></script>
     <!-- Axios  -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!-- JS index -->
     <script type="module" src="../controller/index.js"></script>
+    <script>
+        initQuatyAdjustControl(".qty-adjust");
+    </script>
 </body>
 
 </html>

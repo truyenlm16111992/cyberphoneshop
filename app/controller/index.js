@@ -1,4 +1,4 @@
-import { getElement, getElements, formatPercent, formatMoney } from "../../assets/utils/utils.js";
+//import { getElement, getElements, formatPercent, formatMoney } from "../../assets/utils/utils.js";
 import { instance } from "../constants/api.js"
 import Product from "../model/product.js";
 import ProductList from "../model/productList.js"
@@ -15,11 +15,13 @@ const getProductList = () => {
         getElement("#productList").innerHTML=renderHtmlProductGrid(list.arrProduct);
     });
 };
+window.quickViewProdutct = (id)=>{
+    getElement('#btnShowQuickView').click();
+}
 getProductList();
 const renderHtmlProductGrid=(arr)=>{
     let content="";
     arr.forEach(e=>{
-        console.log(formatMoney(1000));
         content+=`
             <div class="group mb-[3px] hover:mb-0 h-full">
                 <div
@@ -32,7 +34,7 @@ const renderHtmlProductGrid=(arr)=>{
                         <ul
                             class="absolute z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-md grid grid-cols-2 gap-3 transition-all duration-500 opacity-0 scale-0 group-hover:opacity-100 group-hover:scale-100">
                             <li>
-                                <button onclick="getElement('#test').click();" data-tooltip-target="tooltipQuickView1"
+                                <button onclick="quickViewProdutct(${e.id})" data-tooltip-target="tooltipQuickView1"
                                     class="h-10 w-10 rounded-full flex items-center justify-center bg-white hover:text-white hover:bg-lime-500"><i
                                         class="fa fa-search"></i></button>
                                 <div id="tooltipQuickView1" role="tooltip"
