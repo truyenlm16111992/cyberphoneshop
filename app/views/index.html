@@ -22,9 +22,75 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <!-- Main CSS  -->
     <link rel="stylesheet" href="../../assets/css/main.css">
+    <style type="text/tailwindcss">
+        @layer utilities {
+            input[type="number"]::-webkit-inner-spin-button,
+            input[type="number"]::-webkit-outer-spin-button {
+                appearance: none;
+            }
+        }
+    </style>
 </head>
 
-<body class="overflow-scroll">
+<body class="overflow-y-auto">
+    <!-- Modal toggle -->
+    <button data-modal-target="defaultModal" data-modal-toggle="defaultModal"
+        class="block"
+        type="button">
+        Toggle modal
+    </button>
+    <!-- Main modal -->
+    <div id="defaultModal" tabindex="-1" aria-hidden="true" class="group fixed top-0 right-0 z-50 w-full">
+        <div
+            class="absolute top-0 right-0 w-full max-w-lg transition-all duration-1000 translate-x-0 group-aria-[modal]:translate-x-0">
+            <!-- Modal content -->
+            <div class="relative flex flex-col min-h-screen bg-white shadow">
+                <!-- Modal header -->
+                <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                    <button type="button"
+                        class="text-white bg-red-500 rounded-lg text-sm w-6 h-6 inline-flex justify-center items-center"
+                        data-modal-hide="defaultModal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                        Có <span>1</span> sản phẩm trong giỏ hàng của bạn
+                    </h3>
+
+                </div>
+                <!-- Modal body -->
+                <div class="flex-auto p-6 space-y-6">
+                    
+                </div>
+                <!-- Modal footer -->
+                <div class="flex flex-col items-center p-6 space-y-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                    <div class="flex justify-between w-full text-xl">
+                        <h6>Tổng tiền:</h6>
+                        <h6 class="flex-auto text-right">20.000.000 đ</h6>
+                    </div>
+                    <div class="flex justify-between w-full text-xl">
+                        <h6>Giảm giá:</h6>
+                        <h6 class="flex-auto text-right">20.000.000 đ</h6>
+                    </div>
+                    <div class="flex justify-between w-full text-xl font-semibold">
+                        <h6>Cần thanh toán:</h6>
+                        <h6 class="flex-autotext-right text-red-500">20.000.000 đ</h6>
+                    </div>
+                    <div class="flex flex-auto w-full">
+                        <button
+                            class="py-4 flex-auto font-semibold border border-r-0 transition-colors duration-300 border-lime-500 bg-lime-600 text-white hover:text-lime-600 hover:bg-white">Xóa tất cả</button>
+                        <button
+                            class="py-4 flex-auto font-semibold border border-l-0 transition-colors duration-300 border-lime-500 bg-lime-600 text-white hover:text-lime-600 hover:bg-white">Thanh
+                            toán</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <header class="header user-layout">
         <div class="header__fixed">
             <div class="container p-5 mx-auto flex justify-between items-center">
@@ -211,7 +277,8 @@
     </section>
     <!-- Quick View Modal -->
     <!-- Modal toggle -->
-    <button id="btnShowQuickView" class="hidden" data-modal-target="quickViewModal" data-modal-toggle="quickViewModal" type="button"></button>
+    <button id="btnShowQuickView" class="hidden" data-modal-target="quickViewModal" data-modal-toggle="quickViewModal"
+        type="button"></button>
     <!-- Main modal -->
     <div id="quickViewModal" tabindex="-1" aria-hidden="true"
         class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -232,28 +299,43 @@
                     </button>
                     <div class="flex m-0 p-0">
                         <div class="w-[40%]">
-                            <img src="../../assets/img/imac.png" alt="">
+                            <img class="quick-view" name="image" src="../../assets/img/imac.png" alt="">
                         </div>
                         <div class="w-[60%] space-y-3">
                             <h3 class="quick-view text-2xl font-bold text-gray-900" name="name">
                                 iPhone 14 Pro Max 128GB
                             </h3>
                             <div class="flex items-end space-x-2">
-                                <h3 class="font-bold text-2xl text-red-500">30.000.000 đ</h3>
-                                <h4 class="font-semibold text-xl line-through text-gray-300">60.000.000 đ</h4>
+                                <h3 class="quick-view font-bold text-2xl text-red-500" name="sellprice">30.000.000 đ
+                                </h3>
+                                <h4 class="quick-view font-semibold text-xl line-through text-gray-300" name="price">
+                                    60.000.000 đ</h4>
                             </div>
                             <div class="quick-view" name="description">
-                                iPhone 14 Pro Max đem đến những trải nghiệm không thể tìm thấy trên mọi thế hệ iPhone trước đó với màu Tím Deep Purple sang trọng, camera 48MP lần đầu xuất hiện, chip A16 Bionic và màn hình “viên thuốc” Dynamic Island linh hoạt, nịnh mắt.
+                                iPhone 14 Pro Max đem đến những trải nghiệm không thể tìm thấy trên mọi thế hệ iPhone
+                                trước đó với màu Tím Deep Purple sang trọng, camera 48MP lần đầu xuất hiện, chip A16
+                                Bionic và màn hình “viên thuốc” Dynamic Island linh hoạt, nịnh mắt.
                             </div>
                             <div class="flex flex-col">
-                                <a href="#" class="leading-10 border border-gray-300 text-center font-semibold bg-lime-600 text-white hover:text-lime-600 hover:bg-white">Chi tiết thông tin sản phẩm</a>
+                                <a href="#"
+                                    class="quick-view leading-10 border border-lime-500 text-center font-semibold bg-lime-600 text-white hover:text-lime-600 hover:bg-white"
+                                    name="link">Chi
+                                    tiết thông tin sản phẩm</a>
                                 <div class="flex mt-1">
                                     <div class="relative w-[100px] qty-adjust">
-                                        <input type="number" class="qty-adjust__num inline-block w-full hover:appearance-none appearance-none leading-10 text-xl font-semibold border transition-colors duration-300 border-lime-500 focus:border-lime-500 focus:shadow-none focus:ring-0" maxlength="2" value="1">
-                                        <button class="qty-adjust__operator absolute top-0 right-0 h-1/2 w-1/2 hover:text-lime-600" data-operator="++" type="button"><i class="fa fa-plus-circle"></i></button>
-                                        <button class="qty-adjust__operator absolute bottom-0 right-0 h-1/2 w-1/2 hover:text-lime-600" data-operator="--" type="button"><i class="fa fa-minus-circle"></i></button>
+                                        <input type="number"
+                                            class="qty-adjust__num inline-block w-full hover:appearance-none appearance-none leading-10 text-xl font-semibold border transition-colors duration-300 border-lime-500 focus:border-lime-500 focus:shadow-none focus:ring-0"
+                                            maxlength="2" min="1" max="99" value="1" readonly>
+                                        <button
+                                            class="qty-adjust__operator absolute top-0 right-0 h-1/2 w-1/2 hover:text-lime-600"
+                                            data-operator="++" type="button"><i class="fa fa-plus-circle"></i></button>
+                                        <button
+                                            class="qty-adjust__operator absolute bottom-0 right-0 h-1/2 w-1/2 hover:text-lime-600"
+                                            data-operator="--" type="button"><i class="fa fa-minus-circle"></i></button>
                                     </div>
-                                    <button class="ml-1 flex-auto font-semibold border transition-colors duration-300 border-gray-300 bg-lime-600 text-white hover:text-lime-600 hover:bg-white">Thêm vào giỏ</button>
+                                    <button id="btnAddToCart" name="id"
+                                        class="ml-1 flex-auto font-semibold border transition-colors duration-300 border-lime-500 bg-lime-600 text-white hover:text-lime-600 hover:bg-white">Thêm
+                                        vào giỏ</button>
                                 </div>
                             </div>
                         </div>

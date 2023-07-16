@@ -1,28 +1,28 @@
-//import { getElement, getElements, formatPercent, formatMoney } from "../../assets/utils/utils.js";
 import { instance } from "../constants/api.js"
 import Product from "../model/product.js";
 import ProductList from "../model/productList.js"
+import CartItem from "../model/cartItem.js";
+import Cart from "../model/cart.js";
 const list = new ProductList();
+window.shoppingCart = new Cart();
+shoppingCart.loadLocalStorage();
 const getProductList = () => {
     instance.get("/product")
-    .then(result=>{
-        let arrTmp=[];
-        result.data.forEach(e=>{
-            const {id,name,image,description,brand,price,discountPercent,createTime}=e;
-            arrTmp.push(new Product(id,name,image,description,brand,price,discountPercent,createTime));
+        .then(result => {
+            let arrTmp = [];
+            result.data.forEach(e => {
+                const { id, name, image, description, brand, price, discountPercent, createTime } = e;
+                arrTmp.push(new Product(id, name, image, description, brand, price, discountPercent, createTime));
+            });
+            list.arrProduct = arrTmp;
+            getElement("#productList").innerHTML = renderHtmlProductGrid(list.arrProduct);
         });
-        list.arrProduct=arrTmp;
-        getElement("#productList").innerHTML=renderHtmlProductGrid(list.arrProduct);
-    });
 };
-window.quickViewProdutct = (id)=>{
-    getElement('#btnShowQuickView').click();
-}
 getProductList();
-const renderHtmlProductGrid=(arr)=>{
-    let content="";
-    arr.forEach(e=>{
-        content+=`
+const renderHtmlProductGrid = (arr) => {
+    let content = "";
+    arr.forEach(e => {
+        content += `
             <div class="group mb-[3px] hover:mb-0 h-full">
                 <div
                     class="flex flex-col h-full justify-center text-center bg-white rounded-md border group-hover:border-lime-500 group-hover:border-b-4">
@@ -62,7 +62,7 @@ const renderHtmlProductGrid=(arr)=>{
                         <div class="flex text-sm">
                             <div class="w-[60%] h-8 bg-red-300 rounded-full dark:bg-gray-700">
                                 <div class="h-full bg-red-500 text-sm font-bold text-white py-1 px-2 leading-none rounded-l-full flex items-center justify-center"
-                                    style="width: ${formatPercent(1-e.discountPercent)}">${formatMoney(e.getSellPrice())}</div>
+                                    style="width: ${formatPercent(1 - e.discountPercent)}">${formatMoney(e.getSellPrice())}</div>
                             </div>
                             <div class="w-[40%] flex items-center justify-end line-through">
                                 ${formatMoney(e.price)}
@@ -75,3 +75,46 @@ const renderHtmlProductGrid=(arr)=>{
     });
     return content;
 };
+window.quickViewProdutct = (id) => {
+    instance.get(`/product/${id}`)
+        .then(result => {
+            const { id, name, image, description, brand, price, discountPercent, createTime } = result.data;
+            const product = new Product(id, name, image, description, brand, price, discountPercent, createTime);
+            getElements("#quickViewModal .quick-view, #btnAddToCart").forEach(e => {
+                switch (e.getAttribute("name")) {
+                    case "id":
+                        e.dataset.id=product.id;
+                        break;
+                    case "image":
+                        e.src = product.image;
+                        break;
+                    case "sellprice":
+                        e.innerHTML = formatMoney(product.getSellPrice());
+                        break;
+                    case "price":
+                        e.innerHTML = formatMoney(product.price);
+                        break;
+                    case "link":
+                        break;
+                    default:
+                        e.innerHTML = product[e.getAttribute("name")];
+                }
+            });
+            getElement("#quickViewModal .qty-adjust__num").value = 1;
+        })
+    getElement('#btnShowQuickView').click();
+};
+const test = ()=>{
+    console.log("Test");
+}
+getElement("#btnAddToCart").onclick = () => {
+    let callback = {
+        success:()=>{
+            getElement("#quickViewModal button[data-modal-hide]").click();
+        }
+    };
+    shoppingCart.addItemByProductId(+getElement("#btnAddToCart").dataset.id,+getElement("#quickViewModal .qty-adjust__num").value,callback);
+};
+const addToShoppingCart = (id, qty) => {
+
+}
