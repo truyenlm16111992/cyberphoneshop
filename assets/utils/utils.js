@@ -9,8 +9,10 @@ const initQuatyAdjustControl = (selector) => {
                 [...btn.parentElement.children].filter(e => e.classList.contains("qty-adjust__num")).forEach(num => {
                     let value = +num.value;
                     let operator = btn.dataset.operator;
-                    if ((value > 1 && operator === "--") || (value < 99 & operator === "++"))
+                    if ((value > 1 && operator === "--") || (value < 99 & operator === "++")){
                         num.value = eval(`${operator}num.value`);
+                        num.onchange();
+                    }
                 });
             }
         });

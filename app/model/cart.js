@@ -9,16 +9,19 @@ class Cart {
         if (data) {
             let arrData = JSON.parse(data);
             this.list = arrData.map(e => {
-                const { id, name, image, price, discount, quaty } = e;
-                return new CartItem(+id, name, image, price, discount, quaty);
+                const { id, name, image, price, discountPercent, quaty } = e;
+                return new CartItem(+id, name, image, price, discountPercent, quaty);
             });
         }
     }
     saveLocalStorage() {
         localStorage.setItem("ShoppingCart", JSON.stringify(this.list));
     }
-    addItem(id, name, image, price, discount, quaty) {
-        this.list.push(new CartItem(id, name, image, price, discount, quaty));
+    findIndexItem(id){
+        return this.list.findIndex(e=>e.id===id);
+    }
+    addItem(id, name, image, price, discountPercent, quaty) {
+        this.list.push(new CartItem(id, name, image, price, discountPercent, quaty));
     }
     addItemByProductId(id, quaty, option) {
         let callback = {

@@ -1,10 +1,10 @@
 class CartItem{
-    constructor(id, name, image, price, discount, quaty){
+    constructor(id, name, image, price, discountPercent, quaty){
         this.id=id;
         this.name=name;
         this.image=image;
         this.price=price;
-        this.discount=discount;
+        this.discountPercent=discountPercent;
         this.quaty=quaty;
     }
 }
