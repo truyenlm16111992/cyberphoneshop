@@ -28,8 +28,8 @@ class Cart {
         return this.list[id];
     }
 
-    addItem(id, name, image, price, discountPercent, quaty) {
-        this.list.push(new CartItem(id, name, image, price, discountPercent, quaty));
+    addItem(item) {
+        this.list.push(item);
     }
 
     addItemByProductId(id, quaty, option) {
@@ -70,7 +70,7 @@ class Cart {
         if (id > -1 && id < this.list.length)
             this.list.splice(id, 1, obj);
     }
-    
+
     removeItemAt(id){
         if (id > -1 && id < this.list.length)
             this.list.splice(id, 1);

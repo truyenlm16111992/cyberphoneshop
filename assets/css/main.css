@@ -4,7 +4,38 @@
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   font-family: "Open Sans", sans-serif;
   font-size: 16px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #4d7c0f;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #65a30d;
+}
+
+#ViewMyCartModal {
+  /* Handle */
+  /* Handle on hover */
+}
+#ViewMyCartModal ::-webkit-scrollbar-thumb {
+  background: #a3a3a3;
+}
+#ViewMyCartModal ::-webkit-scrollbar-thumb:hover {
+  background: #65a30d;
 }/*# sourceMappingURL=main.css.map */

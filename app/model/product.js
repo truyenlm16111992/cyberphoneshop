@@ -1,3 +1,4 @@
+import { getAPIInstance } from "../constants/api.js";
 class Product {
     constructor(id, name, image, description, brand, price, discountPercent, createTime) {
         this.id = id;
@@ -13,12 +14,22 @@ class Product {
         return this.price * (1 - this.discountPercent);
     }
 }
-const getProductById = (id, option) => {
-    let callback = {
+const getProductById = async (id, option) => {
+    const callback = {
         before: (config) => config,
-        success: (respose) => respose,
-        error: (error) => error
+        success: () => { },
+        error: (error) => error,
+        ...option
     };
+    let obj;
+    const instance = getAPIInstance();
+    instance.interceptors.request.use(callback.before);
+    instance.interceptors.response.use(callback.error);
+    await instance.get(`/product/${id}`).then((response => {
+        const { id, name, image, description, brand, price, discountPercent, createTime } = response.data;
+        obj = new Product(+id, name, image, description, brand, price, discountPercent, createTime);
+    }));
+    return obj;
 }
 export default Product;
 export { getProductById };
