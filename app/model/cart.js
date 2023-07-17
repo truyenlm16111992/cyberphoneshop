@@ -4,6 +4,7 @@ class Cart {
     constructor(list = []) {
         this.list = list;
     }
+
     loadLocalStorage() {
         let data = localStorage.getItem("ShoppingCart");
         if (data) {
@@ -14,15 +15,23 @@ class Cart {
             });
         }
     }
+
     saveLocalStorage() {
         localStorage.setItem("ShoppingCart", JSON.stringify(this.list));
     }
-    findIndexItem(id){
-        return this.list.findIndex(e=>e.id===id);
+
+    findIndexItem(id) {
+        return this.list.findIndex(e => e.id === id);
     }
+
+    getItemAt(id) {
+        return this.list[id];
+    }
+
     addItem(id, name, image, price, discountPercent, quaty) {
         this.list.push(new CartItem(id, name, image, price, discountPercent, quaty));
     }
+
     addItemByProductId(id, quaty, option) {
         let callback = {
             before: (config) => {
@@ -35,7 +44,7 @@ class Cart {
             },
             ...option
         };
-        let item = this.list.find(e => e.id===id);
+        let item = this.list.find(e => e.id === id);
         if (!item) {
             let instance = getAPIInstance();
             instance.interceptors.request.use(callback.before);
@@ -49,12 +58,22 @@ class Cart {
                 .catch(error => {
                     callback.error();
                 });
-        } else{
+        } else {
             item.quaty += quaty;
             this.saveLocalStorage();
             callback.success();
         }
-        
+
+    }
+
+    updateItemAt(id, obj) {
+        if (id > -1 && id < this.list.length)
+            this.list.splice(id, 1, obj);
+    }
+    
+    removeItemAt(id){
+        if (id > -1 && id < this.list.length)
+            this.list.splice(id, 1);
     }
 }
 export default Cart;

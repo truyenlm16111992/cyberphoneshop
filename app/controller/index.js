@@ -4,8 +4,8 @@ import ProductList from "../model/productList.js"
 import CartItem from "../model/cartItem.js";
 import Cart from "../model/cart.js";
 const list = new ProductList();
-window.shoppingCart = new Cart();
-shoppingCart.loadLocalStorage();
+const myCart = new Cart();
+myCart.loadLocalStorage();
 const getProductList = () => {
     instance.get("/product")
         .then(result => {
@@ -111,11 +111,12 @@ getElement("#btnAddToCart").onclick = () => {
     let callback = {
         success: () => {
             getElement("#quickViewModal button[data-modal-hide]").click();
+            renderMyCart(myCart.list);
         }
     };
-    shoppingCart.addItemByProductId(+getElement("#btnAddToCart").dataset.id, +getElement("#quickViewModal .qty-adjust__num").value, callback);
+    myCart.addItemByProductId(+getElement("#btnAddToCart").dataset.id, +getElement("#quickViewModal .qty-adjust__num").value, callback);
 };
-const renderShoppingCart = (listProducts) => {
+const renderMyCart = (listProducts) => {
     let numItem = 0, totalPrice = 0, totalAmountDiscount = 0, totalPayment = 0;
     numItem = listProducts.length;
     let content="";
@@ -135,13 +136,13 @@ const renderShoppingCart = (listProducts) => {
                     <div class="qty-adjust flex">
                         <button class="qty-adjust__operator px-1 border border-gray-400 hover:text-lime-600"
                             data-operator="--" type="button"><i class="fa fa-minus-circle"></i></button>
-                        <input type="number" data-id="${e.id}" onchange="updateQuatyCartItem(${e.id});"
+                        <input type="number" data-id="${e.id}" onchange="updateQuatyCartItem(this, ${e.id});"
                             class="qty-adjust__num p-0 text-center appearance-none border border-gray-400 focus:border-gray-400 focus:shadow-none focus:ring-0"
                             maxlength="2" min="1" max="99" value="${e.quaty}" readonly>
                         <button class="qty-adjust__operator px-1 border border-gray-400 hover:text-lime-600"
                             data-operator="++" type="button"><i class="fa fa-plus-circle"></i></button>
                     </div>
-                    <button type="button" class=" hover:underline hover:text-lime-500">Xóa</button>
+                    <button type="button" class=" hover:underline hover:text-lime-500" onclick="removeCartItem(${e.id});">Xóa</button>
                 </div>
                 <div class="basis-[120px] flex flex-col text-right">
                     <h3 class="text-red-500">${formatMoney(e.price*(1-e.discountPercent))}</h3>
@@ -150,7 +151,7 @@ const renderShoppingCart = (listProducts) => {
             </div>
         `;
     });
-    getElements(".your-cart").forEach(e => {
+    getElements(".my-cart").forEach(e => {
         switch (e.getAttribute("name")) {
             case "num-items":
                 e.innerHTML = numItem;
@@ -170,10 +171,26 @@ const renderShoppingCart = (listProducts) => {
     });
     initQuatyAdjustControl(".qty-adjust");
 }
-renderShoppingCart(shoppingCart.list);
-getElement("#btnYourCart").onclick = () => {
-    getElement("#btnViewYourCart").click();
+
+renderMyCart(myCart.list);
+
+getElement("#btnMyCart").onclick = () => {
+    getElement("#btnViewMyCart").click();
 }
-window.updateQuatyCartItem = (id)=>{
-    console.log(shoppingCart.findIndexItem(id));
+
+window.updateQuatyCartItem = (target, id)=>{
+    let index = myCart.findIndexItem(id);
+    let obj = myCart.getItemAt(index);
+    if(obj){
+        console.log(obj);
+        obj.quaty=+target.value;
+        myCart.updateItemAt(index,obj);
+        renderMyCart(myCart.list);
+    }
+}
+
+window.removeCartItem = (id)=>{
+    myCart.removeItemAt(myCart.findIndexItem(id));
+    myCart.saveLocalStorage();
+    renderMyCart(myCart.list);
 }
