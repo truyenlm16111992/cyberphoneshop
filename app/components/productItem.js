@@ -4,7 +4,7 @@ import { getAPIInstance } from "../constants/api.js";
 import myCart from "./myCart.js";
 import { renderMyCart } from "./myCart.js";
 import CartItem from "../model/cartItem.js";
-
+// Xử lý render danh sách sản phẩm 
 const renderHtmlProductItem = (arr) => {
     let content = "";
     arr.forEach(e => {
@@ -73,68 +73,76 @@ const renderHtmlProductItem = (arr) => {
     });
     return content;
 };
-
+// Xử lý hiển thị modal xem nhanh sản phẩm
 window.quickViewProduct = (id) => {
-    let instance = getAPIInstance();
-    instance.interceptors.request.use((config) => {
+    // Xử lý ẩn hiển layout khi đang gọi API lấy thông tin sản phẩm
+    const editLoadingLayout = (isLoading) => {
         getElements(".quick-view .quick-view__info").forEach(e => {
-            e.classList.toggle("hidden", true);
-            e.classList.toggle("flex", false);
+            e.classList.toggle("hidden", isLoading);
+            e.classList.toggle("flex", !isLoading);
         });
-        getElements(".quick-view .quick-view__loading").forEach(e => e.classList.toggle("hidden", false));
-        return config;
-    });
-    instance.get(`/product/${id}`)
-        .then(result => {
-            const { id, name, image, description, brand, price, discountPercent, createTime } = result.data;
-            const product = new Product(id, name, image, description, brand, price, discountPercent, createTime);
-            getElements("#quickViewModal .quick-view, #btnAddToCart").forEach(e => {
-                switch (e.getAttribute("name")) {
-                    case "id":
-                        e.dataset.id = product.id;
-                        break;
-                    case "image":
-                        e.src = product.image;
-                        break;
-                    case "sellprice":
-                        e.innerHTML = formatMoney(product.getSellPrice());
-                        break;
-                    case "price":
-                        e.innerHTML = formatMoney(product.price);
-                        break;
-                    case "link":
-                        break;
-                    default:
-                        e.innerHTML = product[e.getAttribute("name")];
-                }
-            });
-            getElement("#quickViewModal .qty-adjust__num").value = 1;
-            getElements(".quick-view .quick-view__info").forEach(e => {
-                e.classList.toggle("hidden", false);
-                e.classList.toggle("flex", true);
-            });
-            getElements(".quick-view .quick-view__loading").forEach(e => e.classList.toggle("hidden", true));
-        })
+        getElements(".quick-view .quick-view__loading").forEach(e => e.classList.toggle("hidden", !isLoading));
+    };
+    // Khai báo callback sẽ xử lý trước khi request đến API gửi đi
+    const callback = {
+        before: (config) => {
+            //Ẩn thông tin và hiện layout loading
+            editLoadingLayout(true);
+            return config;
+        }
+    }
+    // Gọi hàm lấy thông tin sản phẩm với ID và callback sẽ xử lý trước khi gửi request đến API 
+    getProductById(id, callback).then(result => {
+        getElements("#quickViewModal .quick-view, #btnAddToCart").forEach(e => {
+            switch (e.getAttribute("name")) {
+                case "id":
+                    e.dataset.id = result.id;
+                    break;
+                case "image":
+                    e.src = result.image;
+                    break;
+                case "sellprice":
+                    e.innerHTML = formatMoney(result.getSellPrice());
+                    break;
+                case "price":
+                    e.innerHTML = formatMoney(result.price);
+                    break;
+                case "link":
+                    break;
+                default:
+                    e.innerHTML = result[e.getAttribute("name")];
+            }
+        });
+        getElement("#quickViewModal .qty-adjust__num").value = 1;
+        //Ẩn layout loading và hiển thị thông tin sản phẩm
+        editLoadingLayout(false);
+    })
+    //Cho button nhận sự kiện click để show modal
     getElement('#btnShowQuickView').click();
 };
-
+// Hàm xử lý thêm sản phẩm vào giỏ hàng
 const addItemToCart = (id, quaty, option) => {
+    //Tạo callback mặc định khi gọi API lấy thông tin sản phẩm
     const callback = {
         before: (config) => config,
         success: () => { },
         error: (error) => error,
         ...option
     };
+    //Gọi hàm lấy thông tin sản phẩm qua API
     getProductById(id, callback)
         .then(response => {
+            //Kiểm tra ID sản phẩm có trong giỏ không
             let index = myCart.findIndexItem(+response.id);
             console.log(index);
             if (index === -1) {
+                // Xử lý nếu không có trong giỏ
                 let item = new CartItem(response.id, response.name, response.image, response.price, response.discountPercent, 1);
                 myCart.addItem(item);
                 myCart.saveLocalStorage();
                 callback.success();
             } else {
+                //Xử lý nếu có trong giỏ
                 let item = myCart.getItemAt(index);
                 item.quaty += quaty;
                 myCart.updateItemAt(index, item);
@@ -143,26 +151,31 @@ const addItemToCart = (id, quaty, option) => {
             }
         });
 }
-
+//Xử lý khi click nút thêm vào giỏ trong xem nhanh sản phẩm
 getElement("#btnAddToCart").onclick = () => {
+    // Xử lý ẩn/hiện layout khi đang tải thông tin sản phẩm
+    const editLoadingLayout = (isLoading) => {
+        getElements("#btnAddToCart").forEach(e => e.classList.toggle("hidden", isLoading));
+        getElements(".quick-view__add-loading").forEach(e => e.classList.toggle("hidden", !isLoading));
+        getElements(".quick-view__add-loading").forEach(e => e.classList.toggle("flex", isLoading));
+    };
     let callback = {
+        // Khai cáo callback cần xử lý những gì trước khi gọi API
         before: (config) => {
-            getElements("#btnAddToCart").forEach(e => e.classList.toggle("hidden", true));
-            getElements(".quick-view__add-loading").forEach(e => e.classList.toggle("hidden", false));
-            getElements(".quick-view__add-loading").forEach(e => e.classList.toggle("flex", true));
+            editLoadingLayout(true);
             return config;
         },
+        // Khai cáo callback cần xử lý những gì khi API xử lý xong
         success: () => {
-            getElements("#btnAddToCart").forEach(e => e.classList.toggle("hidden", false));
-            getElements(".quick-view__add-loading").forEach(e => e.classList.toggle("hidden", true));
-            getElements(".quick-view__add-loading").forEach(e => e.classList.toggle("flex", false));
+            editLoadingLayout(false);
             renderMyCart(myCart.list);
             getElement("#quickViewModal button[data-modal-hide]").click();
         }
     };
+    // Gọi hàm thêm sản phẩm vào giỏ
     addItemToCart(+getElement("#btnAddToCart").dataset.id, +getElement("#quickViewModal .qty-adjust__num").value, callback);
 };
-
+//Xử lý khi click nút thêm trên màn hình sản phẩm
 window.addItemToMyCart = (target, id, quaty) => {
     let loading = [...target.parentElement.children].filter(e => e.classList.contains("product-item__loading"));
     let callback = {
@@ -179,8 +192,9 @@ window.addItemToMyCart = (target, id, quaty) => {
     };
     addItemToCart(+id, quaty, callback);
 }
+// Xử lý nút xóa tất cả sản phẩm trong giỏ
 getElement("#btnClearCart").onclick = () => {
-    myCart.list.splice(0,myCart.list.length);
+    myCart.list.splice(0, myCart.list.length);
     myCart.saveLocalStorage();
     renderMyCart(myCart.list);
 }

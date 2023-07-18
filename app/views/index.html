@@ -154,7 +154,8 @@
                                         class="ml-1 flex-1 flex justify-center items-center font-semibold border transition-colors duration-300 border-lime-500 bg-lime-600 text-white hover:text-lime-600 hover:bg-white">
                                         <span>Thêm vào giỏ</span>
                                     </button>
-                                    <div class="quick-view__add-loading hidden flex-1 items-center justify-center ml-1 border border-lime-500">
+                                    <div
+                                        class="quick-view__add-loading hidden flex-1 items-center justify-center ml-1 border border-lime-500">
                                         <div role="status">
                                             <svg aria-hidden="true"
                                                 class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-lime-600"
@@ -383,8 +384,14 @@
     </section>
     <section class="product bg-[#f2f2f2]">
         <div class="container mx-auto p-5">
-            <div id="productList" class="grid grid-cols-4 gap-5">
+            <div id="productList" class="product-list grid grid-cols-4 gap-5">
                 <!-- List items  -->
+            </div>
+            <div
+                class="product-list__loading hidden items-center justify-center w-full h-56">
+                <div
+                    class="px-10 py-3 text-lg font-bold leading-none text-center text-lime-800 bg-lime-200 rounded-full animate-pulse">
+                    Đang tải dữ liệu ...</div>
             </div>
         </div>
     </section>
