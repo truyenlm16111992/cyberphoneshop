@@ -1,7 +1,9 @@
 import Cart from "../model/cart.js";
 import CartItem from "../model/cartItem.js";
 const myCart = new Cart();
+// Tải giỏ hàng từ bộ nhớ 
 myCart.loadLocalStorage();
+// Hàm render danh sách sản phẩm trong giỏ hàng 
 const renderMyCart = (listCartItem) => {
     let numItem = 0, totalPrice = 0, totalAmountDiscount = 0, totalPayment = 0;
     numItem = listCartItem.length;
@@ -57,13 +59,13 @@ const renderMyCart = (listCartItem) => {
     });
     initQuatyAdjustControl(".qty-adjust");
 }
-
+// Gọi hàm render giỏ hàng từ dữ liệu đã lấy ra được từ bộ nhớ 
 renderMyCart(myCart.list);
-
+// Xử lý khi click nút mở giỏ hàng
 getElement("#btnMyCart").onclick = () => {
     getElement("#btnViewMyCart").click();
 }
-
+// Xử lý khi thay đổi số lượng sản phẩm 
 window.updateQuatyCartItem = (target, id)=>{
     let index = myCart.findIndexItem(id);
     let obj = myCart.getItemAt(index);
@@ -74,7 +76,7 @@ window.updateQuatyCartItem = (target, id)=>{
         renderMyCart(myCart.list);
     }
 }
-
+// Xử lý xóa sản phẩm khỏi giỏ hàng 
 window.removeCartItem = (id)=>{
     myCart.removeItemAt(myCart.findIndexItem(id));
     myCart.saveLocalStorage();

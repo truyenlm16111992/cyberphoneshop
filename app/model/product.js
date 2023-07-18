@@ -14,10 +14,10 @@ class Product {
         return this.price * (1 - this.discountPercent);
     }
 }
+// Hàm sử dụng chung để lấy thông tin sản phâm
 const getProductById = async (id, option) => {
     const callback = {
         before: (config) => config,
-        success: () => { },
         error: (error) => error,
         ...option
     };
