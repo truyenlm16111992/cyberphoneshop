@@ -1,8 +1,5 @@
-import Product from "../model/product.js";
 import { getProductById } from "../model/product.js";
-import { getAPIInstance } from "../constants/api.js";
-import myCart from "./myCart.js";
-import { renderMyCart } from "./myCart.js";
+import { myCart, renderMyCart } from "./myCart.js";
 import CartItem from "../model/cartItem.js";
 // Xử lý render danh sách sản phẩm 
 const renderHtmlProductItem = (arr) => {
@@ -137,7 +134,7 @@ const addItemToCart = (id, quaty, option) => {
             console.log(index);
             if (index === -1) {
                 // Xử lý nếu không có trong giỏ
-                let item = new CartItem(response.id, response.name, response.image, response.price, response.discountPercent, 1);
+                let item = new CartItem(response.id, response.name, response.image, response.price, response.discountPercent, quaty);
                 myCart.addItem(item);
                 myCart.saveLocalStorage();
                 callback.success();

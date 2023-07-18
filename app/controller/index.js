@@ -1,9 +1,5 @@
-import { instance } from "../constants/api.js"
-import Product from "../model/product.js";
 import ProductList from "../model/productList.js"
 import { getProductList } from "../model/productList.js"
-import CartItem from "../model/cartItem.js";
-import Cart from "../model/cart.js";
 import { renderHtmlProductItem } from "../components/productItem.js"
 const list = new ProductList();
 // Xử lý ẩn/hiện layout khi đang tải danh sách
@@ -33,5 +29,8 @@ getProductList(callbackLoadProduct).then(result => {
 });
 
 
-
-
+const queryString = window.location.search;
+console.log(queryString);
+const urlParams = new URLSearchParams(queryString);
+const product = urlParams.get('product')
+console.log(product);

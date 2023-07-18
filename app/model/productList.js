@@ -4,7 +4,12 @@ class ProductList{
     constructor(arrProduct=[]){
         this.arrProduct=arrProduct;
     }
-
+    searchProduct(keySearch){
+        return this.arrProduct.filter(e=>{
+            const {name, brand}=e;
+            return convertStringSearch(name+brand).indexOf(convertStringSearch(keySearch))>-1;
+        });
+    }
 }
 // Hàm xử dụng chung để lấy danh sách sản phẩm
 const getProductList = async (option)=>{
