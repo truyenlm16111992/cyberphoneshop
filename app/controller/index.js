@@ -1,11 +1,7 @@
-import { instance } from "../constants/api.js"
-import Product from "../model/product.js";
 import ProductList from "../model/productList.js"
 import { getProductList } from "../model/productList.js"
-import CartItem from "../model/cartItem.js";
-import Cart from "../model/cart.js";
 import { renderHtmlProductItem } from "../components/productItem.js"
-const list = new ProductList();
+const products = new ProductList();
 // Xử lý ẩn/hiện layout khi đang tải danh sách
 const editLoadingProductLayout = (isLoadding)=>{
     getElements(".product-list").forEach(e => {
@@ -26,12 +22,8 @@ const callbackLoadProduct = {
     }
 };
 getProductList(callbackLoadProduct).then(result => {
-    list.arrProduct = result;
-    getElement("#productList").innerHTML = renderHtmlProductItem(list.arrProduct);
+    products.list = result;
+    getElement("#productList").innerHTML = renderHtmlProductItem(products.getLastProduct(8));
     // Hiển thị danh sách sản phẩm và ẩn layout đang tải đi 
     editLoadingProductLayout(false);
 });
-
-
-
-

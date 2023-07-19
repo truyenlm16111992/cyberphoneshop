@@ -1,13 +1,22 @@
-import Product from "../model/product.js";
 import { getProductById } from "../model/product.js";
-import { getAPIInstance } from "../constants/api.js";
-import myCart from "./myCart.js";
-import { renderMyCart } from "./myCart.js";
+import { myCart, renderMyCart } from "./myCart.js";
 import CartItem from "../model/cartItem.js";
 // Xử lý render danh sách sản phẩm 
-const renderHtmlProductItem = (arr) => {
+const renderHtmlProductItem = (arr, option) => {
+    const pageConfig={
+        numberPerPage:100,
+        page:1,
+        ...option
+    };
     let content = "";
-    arr.forEach(e => {
+    let totalPage=Math.ceil(arr.length/pageConfig.numberPerPage);
+    if(pageConfig.page>totalPage)
+        pageConfig.page=totalPage;
+    // Vị trí phần tử đầu của trang
+    let start=(pageConfig.page-1)*pageConfig.numberPerPage;
+    // Vị trí phần tử cuối cùng của trang
+    let end=start+pageConfig.numberPerPage-1;
+    arr.filter((e,i)=>i>=start&&i<=end).forEach(e => {
         content += `
             <div class="product-item group mb-[3px] hover:mb-0 h-full">
                 <div
@@ -71,6 +80,8 @@ const renderHtmlProductItem = (arr) => {
             </div>
         `;
     });
+    if(!content)
+        content=`<h6 class="h-[300px] text-center col-span-4 font-semibold">Không tìm thấy sản phẩm</h6>`;
     return content;
 };
 // Xử lý hiển thị modal xem nhanh sản phẩm
@@ -137,7 +148,7 @@ const addItemToCart = (id, quaty, option) => {
             console.log(index);
             if (index === -1) {
                 // Xử lý nếu không có trong giỏ
-                let item = new CartItem(response.id, response.name, response.image, response.price, response.discountPercent, 1);
+                let item = new CartItem(response.id, response.name, response.image, response.price, response.discountPercent, quaty);
                 myCart.addItem(item);
                 myCart.saveLocalStorage();
                 callback.success();

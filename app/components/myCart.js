@@ -82,5 +82,5 @@ window.removeCartItem = (id)=>{
     myCart.saveLocalStorage();
     renderMyCart(myCart.list);
 }
-export default myCart;
-export {renderMyCart};
+//export default myCart;
+export {myCart,renderMyCart};
