@@ -1,7 +1,7 @@
 import ProductList from "../model/productList.js"
 import { getProductList } from "../model/productList.js"
 import { renderHtmlProductItem } from "../components/productItem.js"
-const list = new ProductList();
+const products = new ProductList();
 // Xử lý ẩn/hiện layout khi đang tải danh sách
 const editLoadingProductLayout = (isLoadding)=>{
     getElements(".product-list").forEach(e => {
@@ -22,15 +22,8 @@ const callbackLoadProduct = {
     }
 };
 getProductList(callbackLoadProduct).then(result => {
-    list.arrProduct = result;
-    getElement("#productList").innerHTML = renderHtmlProductItem(list.arrProduct);
+    products.list = result;
+    getElement("#productList").innerHTML = renderHtmlProductItem(products.getLastProduct(8));
     // Hiển thị danh sách sản phẩm và ẩn layout đang tải đi 
     editLoadingProductLayout(false);
 });
-
-
-const queryString = window.location.search;
-console.log(queryString);
-const urlParams = new URLSearchParams(queryString);
-const product = urlParams.get('product')
-console.log(product);

@@ -42,7 +42,7 @@ const searchProduct = (target) => {
         }
     };
     getProductList(callback).then(result => {
-        listSearch.arrProduct = result;
+        listSearch.list = result;
         renderResultSearch(listSearch.searchProduct(target.value));
         editLayoutLoading(false);
     });
