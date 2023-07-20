@@ -24,7 +24,7 @@ const renderHtmlProductItem = (arr, option) => {
                     <div
                         class="relative overflow-hidden transition-all duration-500 rounded-t-md border-b border-b-lime-500 group-hover:border-b-white">
                         <img src="${e.image}"
-                            class="w-full  h-auto rounded-t-md transition-all duration-500 group-hover:scale-125 group-hover:bg-gray-200"
+                            class="w-full min-h-[300px] object-cover object-center rounded-t-md transition-all duration-500 group-hover:scale-125 group-hover:bg-gray-200"
                             alt="">
                         <ul
                             class="absolute z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-md grid grid-cols-2 gap-3 transition-all duration-500 opacity-0 scale-0 group-hover:opacity-100 group-hover:scale-100">
@@ -68,7 +68,7 @@ const renderHtmlProductItem = (arr, option) => {
                         <a href="#" class="flex justify-center items-center text-xl font-semibold hover:text-lime-700">${e.name}</a>
                         <div class="flex text-sm">
                             <div class="w-[60%] h-8 bg-red-300 rounded-full dark:bg-gray-700">
-                                <div class="h-full bg-red-500 text-sm font-bold text-white py-1 px-2 leading-none rounded-l-full flex items-center justify-center"
+                                <div class="h-full bg-red-500 text-sm font-bold text-white py-1 px-2 leading-none rounded-full flex items-center justify-center"
                                     style="width: ${formatPercent(1 - e.discountPercent)}">${formatMoney(e.getSellPrice())}</div>
                             </div>
                             <div class="w-[40%] flex items-center justify-end line-through">
