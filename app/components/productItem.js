@@ -209,4 +209,10 @@ getElement("#btnClearCart").onclick = () => {
     myCart.saveLocalStorage();
     renderMyCart(myCart.list);
 }
+// Xử lý nút thanh toán sản phẩm trong giỏ
+getElement("#btnPaymentCart").onclick = () => {
+    myCart.list.splice(0, myCart.list.length);
+    myCart.saveLocalStorage();
+    renderMyCart(myCart.list);
+}
 export { renderHtmlProductItem };
