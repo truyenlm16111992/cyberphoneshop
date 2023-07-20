@@ -1,8 +1,10 @@
-import Food from '../../models/v1/Food.js'
+import Phone from '../../models/v1/Food.js'
+
+
 
 const getElement = (selector) => document.querySelector(selector)
 
-const layThongTinMonAn = () => {
+const layThongTinDienThoai = () => {
     // C1:
     // Lấy thông tin từ user nhập
     // const maMon = getElement('#foodID').value
@@ -30,55 +32,46 @@ const layThongTinMonAn = () => {
     // return new Food(maMon, tenMon, loaiMon, giaMon, khuyenMai, tinhTrang, hinhAnh, moTa)
 
     //C2:
-    let food = {}
+    let phone = {}
     const elements = document.querySelectorAll(
-        '#foodForm input, #foodForm select, #foodForm textarea'
+        '#phoneForm input, #phoneForm select, #phoneForm textarea'
     )
     elements.forEach((ele) => {
         // destructuring
         const { name, value } = ele
-        food[name] = value //dynamic key
-    })
-
-    // tạo đối tượng món ăn từ class Food
-    const { maMon, tenMon, loaiMon, giaMon, hinhAnh, moTa, khuyenMai, tinhTrang } = food
-
-    return new Food(maMon, tenMon, loaiMon, giaMon, khuyenMai, tinhTrang, hinhAnh, moTa)
-}
-
-getElement('#btnThemMon').onclick = () => {
-    // C1:
-    // const food = layThongTinMonAn()
-
-    // getElement('#imgMonAn').src = food.hinhAnh
-    // getElement('#spMa').innerHTML = food.maMon
-    // getElement('#spTenMon').innerHTML = food.tenMon
-    // getElement('#spLoaiMon').innerHTML = food.loaiMon
-    // getElement('#spGia').innerHTML = food.giaMon
-    // getElement('#spKM').innerHTML = food.khuyenMai
-    // getElement('#spGiaKM').innerHTML = 10
-    // getElement('#spTT').innerHTML = food.tinhTrang
-    // getElement('#pMoTa').innerHTML = food.moTa
-
-    // C2:
-    const food = layThongTinMonAn()
-
-    const elements = document.querySelectorAll(
-        '.foodDetail li span,.foodDetail li img, .foodDetail li p'
-    )
-
-    elements.forEach((item) => {
-        const name = item.getAttribute('name')
-        if (name === 'hinhAnh') {
-            item.src = food[name]
-        } else if (name === 'loaiMon') {
-            item.innerHTML = food.mapLoaiMon()
-        } else if (name === 'giaKM') {
-            item.innerHTML = food.tinhGiaKM()
-        } else if (name === 'tinhTrang') {
-            item.innerHTML = food.mapTinhTrang()
+        // phone[name] = value //dynamic key
+        if (name === 'brand' && !value) {
+            phone[name] = 'loai1'; // Gán giá trị mặc định nếu không có giá trị "brand"
         } else {
-            item.innerHTML = food[name]
+            phone[name] = value;
         }
     })
+
+    // tạo đối tượng món ăn từ class Phone
+    const { id, name, brand, price, image, description, discountPercent, createTime } = phone
+
+    return new Phone(id, name, brand, price, image, description, discountPercent, createTime )
 }
+
+getElement('#btnThemPhone').onclick = () => {
+
+     // C2:
+     const phone = layThongTinDienThoai()
+     const elements = document.querySelectorAll(
+         '.phoneDetail li span,.phoneDetail li img, .phoneDetail li p')
+     
+     elements.forEach((item) => {
+         const name = item.getAttribute('name')
+         if (name === 'image') {
+             item.src = phone[name]
+         } else if (name === 'brand') {
+             item.innerHTML = phone.mapLoaiPhone()
+         } else if (name === 'discountPercent') {
+             item.innerHTML = phone.tinhGiaKM()
+         // } else if (name === 'createTime') {
+         //     item.innerHTML = phone.mapTinhTrang()
+         } else {
+             item.innerHTML = phone[name]
+         }
+     })
+ }

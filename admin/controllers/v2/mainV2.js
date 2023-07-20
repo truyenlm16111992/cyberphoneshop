@@ -1,9 +1,13 @@
-import Food from '../../models/v2/FoodV2.js'
+import Phone from '../../models/v2/FoodV2.js'
+import PhoneList from '../../models/v2/phoneList.js'
 import { DOMAIN } from '../../constants/api.js'
+ 
+
+
 
 const getElement = (selector) => document.querySelector(selector)
-
-const getFoodList = () => {
+const phones = new PhoneList();
+const getPhoneList = () => {
     const promise = axios({
         url: DOMAIN,
         method: 'GET',
@@ -13,31 +17,39 @@ const getFoodList = () => {
         //get data thành công
         .then((result) => {
             // console.log('result: ', result)
-            renderTable(result.data)
+            phones.list = result.data.map(e => {
+                const { id, name, image, description, brand, price, discountPercent, createTime } = e;
+                return new Phone(id,name, image,description,brand,price,discountPercent,createTime);
+            });
+            console.log(phones.list);
+            renderTable(phones.list)
         })
         .catch((err) => {
             console.log(err)
         })
 }
-getFoodList()
+getPhoneList()
 
-const renderTable = (arrFoods) => {
+const renderTable = (arrPhone) => {
+    console.log(arrPhone);
     let htmlContent = ''
-    arrFoods.forEach((item) => {
+    arrPhone.forEach((item) => {
         htmlContent += `
             <tr>
-                <td>${item.maMon}</td>
-                <td>${item.tenMon}</td>
-                <td>${item.loaiMon}</td>
-                <td>${Number(item.giaMon).toLocaleString()}</td>
-                <td>${item.khuyenMai}</td>
-                <td>${Number(item.giaMon * (1 - item.khuyenMai / 100)).toLocaleString()}</td>
-                <td>${item.tinhTrang}</td>
+                <td>${item.id}</td>
+                <td>${item.name}</td>
+                <td>${item.brand}</td>
+                <td>${item.description}</td>
+                <td><img id="img" src="../../assets/img/imac.png" alt=""></td>
+                <td>${Number(item.price).toLocaleString()}</td>
+                <td>${item.discountPercent}</td>
+                <td>${Number(item.price * (1 - (item.discountPercent).toLocaleString()))}</td>
+                <td>${item.createTime}</td>
                 <td>
                     <div style='max-width: 200px'>
                         <button 
                             class='btn btn-danger' 
-                            onclick="deleteFood(${item.id})"
+                            onclick="deletePhone(${item.id})"
                         >
                             Delete
                         </button>
@@ -45,7 +57,7 @@ const renderTable = (arrFoods) => {
                             class='btn btn-success ml-3' 
                             data-toggle="modal" 
                             data-target="#exampleModal"
-                            onclick="editFood(${item.id})"
+                            onclick="editPhone(${item.id})"
                         >
                             Edit
                         </button>
@@ -55,56 +67,63 @@ const renderTable = (arrFoods) => {
         `
     })
 
-    getElement('#tbodyFood').innerHTML = htmlContent
+    getElement('#tbodyPhone').innerHTML = htmlContent
 }
 
-const layThongTinMonAn = () => {
+const layThongTinDienThoai = () => {
     const elements = document.querySelectorAll(
-        '#foodForm input, #foodForm select, #foodForm textarea'
+        '#phoneForm input, #phoneForm select, #phoneForm textarea'
     )
 
-    let food = {}
+    let phone = {}
     elements.forEach((ele) => {
         const { name, value } = ele
-        food[name] = value
+        phone[name] = value
     })
 
-    const { maMon, tenMon, loaiMon, giaMon, khuyenMai, tinhTrang, hinhAnh, moTa } = food
+    const { id, name, image, description, brand, price, discountPercent, createTime } = phone
 
-    return new Food(maMon, tenMon, loaiMon, giaMon, khuyenMai, tinhTrang, hinhAnh, moTa)
+    return new Phone(id, name, image, description, brand, price, discountPercent, createTime)
 }
 
-// ẩn btn cập nhật khi click vào btn thêm món ăn
+
+
+// ẩn btn cập nhật khi click vào btn thêm
 getElement('#btnThem').onclick = () => {
     // ẩn btn cập nhật
     getElement('#btnCapNhat').style.display = 'none'
 
-    // show lại btn thêm món ăn
-    getElement('#btnThemMon').style.display = 'inline-block'
+    // show lại btn thêm 
+    getElement('#btnThemPhone').style.display = 'inline-block'
 }
 
-//gọi API thêm món ăn vào DB
-getElement('#btnThemMon').onclick = () => {
-    // lấy thông tin món ăn từ input
-    const food = layThongTinMonAn()
-    console.log('food: ', food)
+//gọi API thêm vào DB
+getElement('#btnThemPhone').onclick = () => {
+    // lấy thông tin từ input
+    const phone = layThongTinDienThoai()
+    console.log('phone: ', phone)
 
-    // call API thêm món ăn
+    // call API thêm điện thoại
     const promise = axios({
         url: DOMAIN,
         method: 'POST',
+        // add cross-origin header 
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json',
+        },
         data: {
-            ...food,
-            loaiMon: food.mapLoaiMon(),
-            tinhTrang: food.mapTinhTrang(),
+            ...phone,
+            brand: phone.mapLoaiPhone(),
+            // createTime: phone.CreateTime(),
         },
     })
 
     promise
         // thêm mới thành công
         .then((result) => {
-            // get lại danh sách món ăn
-            getFoodList()
+            // get lại danh sách 
+            getPhoneList()
 
             // đóng modal sau khi thêm thành công
             getElement('.btn.btn-secondary').click()
@@ -116,10 +135,10 @@ getElement('#btnThemMon').onclick = () => {
         })
 }
 
-// Xóa món ăn
-window.deleteFood = (id) => {
+// Xóa 
+window.deletePhone = (id) => {
     console.log({ id })
-    // call API xóa food
+    // call API xóa phone
     const promise = axios({
         url: `${DOMAIN}/${id}`,
         method: 'DELETE',
@@ -128,8 +147,8 @@ window.deleteFood = (id) => {
     promise
         // Xóa thành công
         .then(() => {
-            // get lại danh sách food sau khi xóa thành công
-            getFoodList()
+            // get lại danh sách phone sau khi xóa thành công
+            getPhoneList()
         })
         // Xóa thất bại
         .catch((err) => {
@@ -137,10 +156,11 @@ window.deleteFood = (id) => {
         })
 }
 
-// EDIT FOOD
-window.editFood = (id) => {
-    // ẩn btn thêm món
-    getElement('#btnThemMon').style.display = 'none'
+// EDIT 
+window.editPhone = (id) => {
+    console.log(id);
+    // ẩn btn 
+    getElement('#btnThemPhone').style.display = 'none'
 
     // show lại btn cập nhật
     getElement('#btnCapNhat').style.display = 'inline-block'
@@ -149,7 +169,7 @@ window.editFood = (id) => {
     getElement('#btnCapNhat').setAttribute('data-id', id)
 
     // console.log(id)
-    // call API lấy thông tin món ăn
+    // call API lấy thông tin 
     const promise = axios({
         url: `${DOMAIN}/${id}`,
         method: 'GET',
@@ -159,10 +179,10 @@ window.editFood = (id) => {
         .then((result) => {
             console.log(result.data)
             const elements = document.querySelectorAll(
-                '#foodForm input, #foodForm select, #foodForm textarea'
+                '#phoneForm input, #phoneForm select, #phoneForm textarea'
             )
             elements.forEach((ele) => {
-                const { name } = ele // maMon
+                const { name } = ele // maPhone
                 ele.value = result.data[name] //dynamic key
             })
         })
@@ -172,27 +192,27 @@ window.editFood = (id) => {
 }
 
 getElement('#btnCapNhat').onclick = () => {
-    // Lấy thông tin món ăn từ input
-    const food = layThongTinMonAn()
+    // Lấy thông tin  từ input
+    const phone = layThongTinDienThoai()
 
     // lấy id thông qua attribute data-id đã set ở hàm editFood
-    const id = getElement('#btnCapNhat').getAttribute('data-id')
+    const id = getElement('#btnCapNhat').dataset.id
 
     // call API cập nhật DB
     const promise = axios({
         url: `${DOMAIN}/${id}`, // id từ đâu chưa biết
         method: 'PUT',
         data: {
-            ...food,
-            loaiMon: food.mapLoaiMon(),
-            tinhTrang: food.mapTinhTrang(),
+            ...phone,
+            brand: phone.mapLoaiPhone(),
+            // createTime: phone.CreateTime(),
         },
     })
 
     promise
         .then(() => {
             //get lại danh sách món ăn sau khi cập nhật thành công
-            getFoodList()
+            getPhoneList()
 
             // đóng modal sau khi thêm thành công
             getElement('.btn.btn-secondary').click()

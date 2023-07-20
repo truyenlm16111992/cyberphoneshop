@@ -1,28 +1,37 @@
-class Food {
-    constructor(_maMon, _tenMon, _loaiMon, _giaMon, _khuyenMai, _tinhTrang, _hinhAnh, _moTa) {
-        this.maMon = _maMon
-        this.tenMon = _tenMon
-        this.loaiMon = _loaiMon
-        this.giaMon = _giaMon
-        this.khuyenMai = _khuyenMai
-        this.tinhTrang = _tinhTrang
-        this.hinhAnh = _hinhAnh
-        this.moTa = _moTa
+class Phone {
+    constructor(_id , _name, _image, _description, _brand, _price, _discountPercent,_createTime) {
+        this.id = _id
+        this.name = _name
+        this.image = _image
+        this.description = _description
+        this.brand = _brand
+        this.price = _price
+        this.discountPercent = _discountPercent
+        this.createTime=_createTime
     }
 
-    mapLoaiMon() {
+    mapLoaiPhone() {
         // if (this.loaiMon === 'loai1') return 'Chay'
         // if (this.loaiMon === 'loai2') return 'Mặn'
 
-        return this.loaiMon === 'loai1' ? 'Chay' : 'Mặn'
+        //  return this.brand === 'loai1' ? 'Apple' : 'Samsung' ? 'Oppo' : 'Xiaomi' ? 'Vivo' : 'Honor'
+        if (this.brand === 'loai1') return 'Apple';
+        if (this.brand === 'loai2') return 'Samsung';
+        if (this.brand === 'loai3') return 'Oppo';
+        if (this.brand === 'loai4') return 'Xiaomi';
+        if (this.brand === 'loai5') return 'Vivo';
+        if (this.brand === 'loai6') return 'Honor';
+
+        return 'Unknown';
     }
 
-    mapTinhTrang() {
-        return this.tinhTrang === '1' ? 'Còn' : 'Hết'
-    }
+    
+    // mapTinhTrang() {
+    //     return this.tinhTrang === '1' ? 'Còn' : 'Hết'
+    // }
 
     tinhGiaKM() {
-        return this.giaMon * (1 - Number(this.khuyenMai) / 100)
+        return this.price * (1 - Number(this.discountPercent))
     }
 }
-export default Food
+export default Phone
