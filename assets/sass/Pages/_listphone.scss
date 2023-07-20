@@ -1,0 +1,10 @@
+#listProduct {
+    th {
+        vertical-align: middle;
+    }
+}
+#phoneForm{
+    input:invalid ~ .invalid-feedback{
+        display: inherit;
+    }
+}
