@@ -5,7 +5,7 @@ class ProductList {
         this.list = list;
     }
     getLastProduct(num){
-        return this.list.sort((a,b)=>a.createTime-b.createTime).filter((e,i)=>i<num);
+        return this.list.sort((a,b)=>+b.createTime-a.createTime).filter((e,i)=>i<num);
     }
     searchProduct(keySearch) {
         return this.list.filter(e => {
