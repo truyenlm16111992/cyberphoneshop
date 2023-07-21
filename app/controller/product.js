@@ -43,6 +43,7 @@ if (urlParams.get("productID")) {
             }
         });
         getElement("#btnAddProductToCart").setAttribute("data-id",result.id);
+        getElement("#linkToBrand").href=`./collections.html?brand=${result.brand}`;
         console.log("Set ID=>",getElement("#btnAddProductToCart").dataset.id)
         getElement("#product-info .qty-adjust__num").value = 1;
         //Ẩn layout loading và hiển thị thông tin sản phẩm

@@ -3,20 +3,20 @@ import { myCart } from "./myCart.js";
 import CartItem from "../model/cartItem.js";
 // Xử lý render danh sách sản phẩm 
 const renderHtmlProductItem = (arr, option) => {
-    const pageConfig={
-        numberPerPage:100,
-        page:1,
+    const pageConfig = {
+        numberPerPage: 100,
+        page: 1,
         ...option
     };
     let content = "";
-    let totalPage=Math.ceil(arr.length/pageConfig.numberPerPage);
-    if(pageConfig.page>totalPage)
-        pageConfig.page=totalPage;
+    let totalPage = Math.ceil(arr.length / pageConfig.numberPerPage);
+    if (pageConfig.page > totalPage)
+        pageConfig.page = totalPage;
     // Vị trí phần tử đầu của trang
-    let start=(pageConfig.page-1)*pageConfig.numberPerPage;
+    let start = (pageConfig.page - 1) * pageConfig.numberPerPage;
     // Vị trí phần tử cuối cùng của trang
-    let end=start+pageConfig.numberPerPage-1;
-    arr.filter((e,i)=>i>=start&&i<=end).forEach(e => {
+    let end = start + pageConfig.numberPerPage - 1;
+    arr.filter((e, i) => i >= start && i <= end).forEach(e => {
         content += `
             <div class="product-item group mb-[3px] hover:mb-0 h-full">
                 <div
@@ -80,8 +80,8 @@ const renderHtmlProductItem = (arr, option) => {
             </div>
         `;
     });
-    if(!content)
-        content=`<h6 class="h-[300px] text-center col-span-4 font-semibold">Không tìm thấy sản phẩm</h6>`;
+    if (!content)
+        content = `<h6 class="h-[300px] text-center col-span-4 font-semibold">Không tìm thấy sản phẩm</h6>`;
     return content;
 };
 // Xử lý hiển thị modal xem nhanh sản phẩm
@@ -119,7 +119,10 @@ window.quickViewProduct = (id) => {
                     e.innerHTML = formatMoney(result.price);
                     break;
                 case "link":
-                    e.href=`./product.html?productID=${result.id}`
+                    e.href = `./product.html?productID=${result.id}`
+                    break;
+                case "link-brand":
+                    e.href = `./collections.html?brand=${result.brand}`;
                     break;
                 default:
                     e.innerHTML = result[e.getAttribute("name")];
