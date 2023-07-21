@@ -65,7 +65,7 @@ const renderHtmlProductItem = (arr, option) => {
                             class="absolute top-2 right-2 px-2 py-1 bg-red-500 text-white text-sm before:content-['-']">${formatPercent(e.discountPercent)}</span>
                     </div>
                     <div class="p-3 flex-auto flex flex-col justify-between">
-                        <a href="#" class="flex justify-center items-center text-xl font-semibold hover:text-lime-700">${e.name}</a>
+                        <a href="./product.html?productID=${e.id}" class="flex justify-center items-center text-xl font-semibold hover:text-lime-700">${e.name}</a>
                         <div class="flex text-sm">
                             <div class="w-[60%] h-8 bg-red-300 rounded-full dark:bg-gray-700">
                                 <div class="h-full bg-red-500 text-sm font-bold text-white py-1 px-2 leading-none rounded-full flex items-center justify-center"
@@ -119,6 +119,7 @@ window.quickViewProduct = (id) => {
                     e.innerHTML = formatMoney(result.price);
                     break;
                 case "link":
+                    e.href=`./product.html?productID=${result.id}`
                     break;
                 default:
                     e.innerHTML = result[e.getAttribute("name")];
