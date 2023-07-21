@@ -34,7 +34,7 @@ const checkValidation = (obj) => {
     let isValid = true;
     switch (nameObj) {
         case "id":
-            isValid = checkStringLength(obj.value, 1, 5, idErrorMsg, "ID sản phẩm là số nguyên dương không quá 5 chữ số") && checkRegex(obj.value, /^\d+$/, idErrorMsg, "ID sản phẩm là số nguyên dương không quá 5 chữ số")&&(!getElement('#btnCapNhat').dataset.id&&phones.checkExistID(obj.value)>-1?false&showMessage(idErrorMsg, `ID sản phẩm '${obj.value}' đã tồn tại.`):showMessage(idErrorMsg, ""));
+            isValid = checkStringLength(obj.value, 1, 5, idErrorMsg, "ID sản phẩm là số nguyên dương không quá 5 chữ số") && checkRegex(obj.value, /^\d+$/, idErrorMsg, "ID sản phẩm là số nguyên dương không quá 5 chữ số") && (!getElement('#btnCapNhat').dataset.id && phones.checkExistID(obj.value) > -1 ? false & showMessage(idErrorMsg, `ID sản phẩm '${obj.value}' đã tồn tại.`) : showMessage(idErrorMsg, ""));
             break;
         case "price":
             isValid = checkStringLength(obj.value, 1, undefined, idErrorMsg, "Đây là trường bắt buộc không được bỏ trống") && checkRegex(obj.value, /^\d+$/, idErrorMsg, "Giá sản phẩm là một số nguyên dương");
@@ -55,9 +55,9 @@ let listPercent = "";
 for (let i = 0; i <= 1; i = Math.floor((i + 0.05) * 100) / 100)
     listPercent += `<option value="${!i ? "" : i}" ${!i ? " selected" : ""}>${formatPercent(i)}</option>`;
 getElement("#discountPercent").innerHTML = listPercent;
-const renderTable = (arrPhone) => {
+const renderTable = (arrPhone, sort = 0) => {
     let htmlContent = ''
-    arrPhone.forEach((item) => {
+    arrPhone.sort((a, b) => sort ? b.price - a.price : a.price - b.price).forEach((item) => {
         htmlContent += `
         <tr>
             <td>${item.id}</td>
@@ -109,13 +109,13 @@ getElement('#btnThem').onclick = () => {
     // show lại btn thêm 
     getElement('#btnThemPhone').style.display = 'inline-block'
 
-    getElement("#id").toggleAttribute("disabled",false);
+    getElement("#id").toggleAttribute("disabled", false);
 
     getElements("#phoneForm input, #phoneForm select, #phoneForm textarea").forEach(e => {
         e.value = "";
     });
     getElement('#btnCapNhat').toggleAttribute('data-id', false);
-    getElements(".invalid-feedback").forEach(e=>e.innerHTML="");
+    getElements(".invalid-feedback").forEach(e => e.innerHTML = "");
 }
 
 //gọi API thêm vào DB
@@ -135,12 +135,12 @@ getElement('#btnThemPhone').onclick = () => {
             },
             data: {
                 ...phone,
-                createTime:convertDateToString(new Date())
+                createTime: convertDateToString(new Date())
             },
         })
         console.log({
             ...phone,
-            createTime:convertDateToString(new Date())
+            createTime: convertDateToString(new Date())
         });
         promise
             // thêm mới thành công
@@ -186,7 +186,7 @@ window.editPhone = (id) => {
     // show lại btn cập nhật
     getElement('#btnCapNhat').style.display = 'inline-block'
 
-    getElement("#id").toggleAttribute("disabled",true);
+    getElement("#id").toggleAttribute("disabled", true);
 
     //set data-id vào btn cập nhật
     getElement('#btnCapNhat').setAttribute('data-id', id)
@@ -246,12 +246,16 @@ getElement('#btnCapNhat').onclick = () => {
     }
 }
 
-getElement("#selLoai").onchange=(event)=>{
+getElement("#selLoai").onchange = (event) => {
     const value = event.currentTarget.value;
-    renderTable(phones.searchPhoneByAttribute({brand:value}));
+    renderTable(phones.searchPhoneByAttribute({ brand: value }), +getElement("#selSort").value);
 }
 let timer;
-getElement("#tbSearch").onkeyup=(event)=>{
+getElement("#tbSearch").onkeyup = (event) => {
     clearTimeout(timer);
-    timer=setTimeout(()=>renderTable(phones.searchPhone(event.target.value)),500);
+    timer = setTimeout(() => renderTable(phones.searchPhone(event.target.value), +getElement("#selSort").value), 500);
+}
+getElement("#selSort").onchange = (event) => {
+    const value = getElement("#selLoai").value;
+    renderTable(phones.searchPhoneByAttribute({ brand: value }), +event.target.value);
 }
