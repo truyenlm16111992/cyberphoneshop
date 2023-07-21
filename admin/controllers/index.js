@@ -246,3 +246,8 @@ getElement("#selLoai").onchange=(event)=>{
     const value = event.currentTarget.value;
     renderTable(phones.searchPhoneByAttribute({brand:value}));
 }
+let timer;
+getElement("#tbSearch").onkeyup=(event)=>{
+    clearTimeout(timer);
+    timer=setTimeout(()=>renderTable(phones.searchPhone(event.target.value)),500);
+}
