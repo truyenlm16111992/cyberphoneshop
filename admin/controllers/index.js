@@ -16,9 +16,8 @@ const getPhoneList = () => {
             // console.log('result: ', result)
             phones.list = result.data.map(e => {
                 const { id, name, image, description, brand, price, discountPercent, createTime } = e;
-                return new Phone(+id, name, image, description, brand, price, discountPercent, createTime);
+                return new Phone(id, name, image, description, brand, price, discountPercent, createTime);
             });
-            console.log(phones.list);
             renderTable(phones.list)
         })
         .catch((err) => {
@@ -35,7 +34,7 @@ const checkValidation = (obj) => {
     let isValid = true;
     switch (nameObj) {
         case "id":
-            isValid = checkStringLength(obj.value, 1, 5, idErrorMsg, "ID sản phẩm là số nguyên dương không quá 5 chữ số") && checkRegex(obj.value, /^\d+$/, idErrorMsg, "ID sản phẩm là số nguyên dương không quá 5 chữ số")&&(!getElement('#btnCapNhat').dataset.id&&phones.checkExistID(+obj.value)>-1?false&showMessage(idErrorMsg, `ID sản phẩm '${obj.value}' đã tồn tại.`):showMessage(idErrorMsg, ""));
+            isValid = checkStringLength(obj.value, 1, 5, idErrorMsg, "ID sản phẩm là số nguyên dương không quá 5 chữ số") && checkRegex(obj.value, /^\d+$/, idErrorMsg, "ID sản phẩm là số nguyên dương không quá 5 chữ số")&&(!getElement('#btnCapNhat').dataset.id&&phones.checkExistID(obj.value)>-1?false&showMessage(idErrorMsg, `ID sản phẩm '${obj.value}' đã tồn tại.`):showMessage(idErrorMsg, ""));
             break;
         case "price":
             isValid = checkStringLength(obj.value, 1, undefined, idErrorMsg, "Đây là trường bắt buộc không được bỏ trống") && checkRegex(obj.value, /^\d+$/, idErrorMsg, "Giá sản phẩm là một số nguyên dương");
@@ -98,7 +97,7 @@ const layThongTinDienThoai = () => {
         isValue &= checkValidation(ele);
     })
     const { id, name, image, description, brand, price, discountPercent, createTime } = phone
-    return isValue ? new Phone(+id, name, image, description, brand, price, discountPercent, createTime) : null
+    return isValue ? new Phone(id, name, image, description, brand, price, discountPercent, createTime) : null
 }
 
 
@@ -241,4 +240,9 @@ getElement('#btnCapNhat').onclick = () => {
                 console.log(err)
             })
     }
+}
+
+getElement("#selLoai").onchange=(event)=>{
+    const value = event.currentTarget.value;
+    renderTable(phones.searchPhoneByAttribute({brand:value}));
 }
