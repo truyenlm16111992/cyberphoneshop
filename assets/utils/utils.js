@@ -11,7 +11,8 @@ const initQuatyAdjustControl = (selector) => {
                     let operator = btn.dataset.operator;
                     if ((value > 1 && operator === "--") || (value < 99 & operator === "++")) {
                         num.value = eval(`${operator}num.value`);
-                        num.onchange();
+                        if(num.onchange)
+                            num.onchange();
                     }
                 });
             }

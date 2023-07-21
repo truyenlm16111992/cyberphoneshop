@@ -4,7 +4,7 @@ const myCart = new Cart();
 // Tải giỏ hàng từ bộ nhớ 
 myCart.loadLocalStorage();
 // Hàm render danh sách sản phẩm trong giỏ hàng 
-const renderMyCart = (listCartItem) => {
+window.renderMyCart = (listCartItem) => {
     let numItem = 0, totalPrice = 0, totalAmountDiscount = 0, totalPayment = 0;
     numItem = listCartItem.length;
     let content="";
@@ -83,4 +83,4 @@ window.removeCartItem = (id)=>{
     renderMyCart(myCart.list);
 }
 //export default myCart;
-export {myCart,renderMyCart};
+export {myCart};
