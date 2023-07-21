@@ -109,6 +109,8 @@ getElement('#btnThem').onclick = () => {
     // show lại btn thêm 
     getElement('#btnThemPhone').style.display = 'inline-block'
 
+    getElement("#id").toggleAttribute("disabled",false);
+
     getElements("#phoneForm input, #phoneForm select, #phoneForm textarea").forEach(e => {
         e.value = "";
     });
@@ -183,6 +185,8 @@ window.editPhone = (id) => {
 
     // show lại btn cập nhật
     getElement('#btnCapNhat').style.display = 'inline-block'
+
+    getElement("#id").toggleAttribute("disabled",true);
 
     //set data-id vào btn cập nhật
     getElement('#btnCapNhat').setAttribute('data-id', id)
