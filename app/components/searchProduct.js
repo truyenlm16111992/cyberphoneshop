@@ -6,7 +6,7 @@ const renderResultSearch = (result) => {
     let content = "";
     result.forEach(e => {
         content += `
-        <a href="#"
+        <a href="./product.html?productID=${e.id}"
             class="flex group px-3 py-3 justify-center items-center hover:bg-gray-100">
             <div class="basis-[50px]">
                 <img src="${e.image}" alt="">
