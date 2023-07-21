@@ -1,5 +1,5 @@
 import { getProductById } from "../model/product.js";
-import { myCart, renderMyCart } from "./myCart.js";
+import { myCart } from "./myCart.js";
 import CartItem from "../model/cartItem.js";
 // Xử lý render danh sách sản phẩm 
 const renderHtmlProductItem = (arr, option) => {
@@ -133,7 +133,7 @@ window.quickViewProduct = (id) => {
     getElement('#btnShowQuickView').click();
 };
 // Hàm xử lý thêm sản phẩm vào giỏ hàng
-const addItemToCart = (id, quaty, option) => {
+window.addItemToCart = (id, quaty, option) => {
     //Tạo callback mặc định khi gọi API lấy thông tin sản phẩm
     const callback = {
         before: (config) => config,

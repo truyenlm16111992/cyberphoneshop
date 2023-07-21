@@ -2,6 +2,7 @@ import Product from "../model/product.js";
 import { getProductById } from "../model/product.js";
 import ProductList from "../model/productList.js";
 import { getProductList } from "../model/productList.js"
+import { myCart } from "../components/myCart.js";
 const urlParams = new URLSearchParams(window.location.search);
 
 const editLoadingLayout_Info = (isLoading) => {
@@ -41,6 +42,8 @@ if (urlParams.get("productID")) {
                     e.innerHTML = result[e.getAttribute("name")];
             }
         });
+        getElement("#btnAddProductToCart").setAttribute("data-id",result.id);
+        console.log("Set ID=>",getElement("#btnAddProductToCart").dataset.id)
         getElement("#product-info .qty-adjust__num").value = 1;
         //Ẩn layout loading và hiển thị thông tin sản phẩm
         getProductList().then(resultList=>{
@@ -68,3 +71,25 @@ if (urlParams.get("productID")) {
         editLoadingLayout_Info(false);
     })
 }
+getElement("#btnAddProductToCart").onclick = (event) => {
+    // Xử lý ẩn/hiện layout khi đang tải thông tin sản phẩm
+    const editLoadingLayout = (isLoading) => {
+        getElements("#btnAddProductToCart").forEach(e => e.classList.toggle("hidden", isLoading));
+        getElements(".product-info__add-loading").forEach(e => e.classList.toggle("hidden", !isLoading));
+        getElements(".product-info__add-loading").forEach(e => e.classList.toggle("flex", isLoading));
+    };
+    let callback = {
+        // Khai cáo callback cần xử lý những gì trước khi gọi API
+        before: (config) => {
+            editLoadingLayout(true);
+            return config;
+        },
+        // Khai cáo callback cần xử lý những gì khi API xử lý xong
+        success: () => {
+            editLoadingLayout(false);
+            renderMyCart(myCart.list);
+        }
+    };
+    // Gọi hàm thêm sản phẩm vào giỏ
+    addItemToCart(+event.currentTarget.dataset.id, +getElement(".product-info__content .qty-adjust__num").value, callback);
+};
