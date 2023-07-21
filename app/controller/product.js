@@ -50,8 +50,9 @@ if (urlParams.get("productID")) {
         getProductList().then(resultList=>{
             let contentList = "";
             const list = new ProductList(resultList);
-            const productRelated=list.searchProductByAttribute({brand:result.brand}).sort((a,b)=>b.createTime-a.createTime);
-            for(let i=1;i<productRelated.length&&i<4;i++){
+            const productRelated=list.searchProductByAttribute({brand:result.brand}).sort((a,b)=>+b.createTime-a.createTime);
+            console.log(productRelated);
+            for(let i=0;i<productRelated.length&&i<4;i++){
                 contentList+=`
                 <li class="group/product px-3 py-3 hover:shadow-md">
                     <a href="./product.html?productID=${productRelated[i].id}" class="flex flex-row">
